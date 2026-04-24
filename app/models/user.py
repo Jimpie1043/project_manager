@@ -9,8 +9,13 @@ class User(db.Model):
     hashed_password = db.Column(db.String(255), nullable=False)
     admin = db.Column(db.Boolean, default=False)
 
-    projects = db.relationship(
+    owned_projects = db.relationship(
         "Project",
-        backref="user",
-        lazy=True,
-        cascade="all, delete-orphan")
+        back_populates="owner"
+        )
+    
+    allowed_projects = db.relationship(
+        "Allowed",
+        back_populates="user",
+        cascade="all, delete-orphan"
+        )
