@@ -1,9 +1,10 @@
 from flask import (
-    Blueprint, render_template, url_for, request, redirect, flash
+    Blueprint, render_template, url_for, request, redirect, flash, session
 )
 
 from app import db
 from app.models.project import Project
+from app.models.allowed import Allowed
 from app.utils.auth import login_required
 
 
@@ -14,10 +15,9 @@ workspace = Blueprint('workspace', __name__)
 @login_required
 def index():
     """
-    WILL HAVE TO CHANGE THIS SO YOU CAN ONLY
-    SEE YOUR OWNED/SHARED PROJECTS!
+    WILL HAVE TO MAKE SURE YOU CAN ONLY SEE YOUR OWNED/ALLOWED PROJECTS
     """
-    projects = Project.query.all()
+    projects = Allowed.query.filter_by(user_id=session["user_id"]).all
     return render_template('workspace/index.html', projects=projects)
 
 
@@ -50,16 +50,16 @@ def create():
 @workspace.route('/<int:project_id>')
 @login_required
 def project():
-    return
+    projects = Allowed.query.filter_by(user_id=session["user_id"]).all
 
 
 @workspace.route('/<int:project_id>/edit')
 @login_required
 def project_edit():
-    return
+    projects = Allowed.query.filter_by(user_id=session["user_id"]).all
 
 
 @workspace.route('/<int:project_id>/delete')
 @login_required
 def project_delete():
-    return
+    projects = Allowed.query.filter_by(user_id=session["user_id"]).all
