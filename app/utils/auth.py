@@ -1,27 +1,27 @@
-import functools
+from functools import wraps
 
 from flask import (
-    g, redirect, url_for
+    redirect, url_for, abort, session
 )
 
 
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-        
-        return view(**kwargs)
-    
-    return wrapped_view
+def login_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("auth.login"))
+        return f(*args, **kwargs)
+    return wrapper
 
 
-def admin_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.admin is False or g.user is None:
-            return redirect(url_for('workspace.index'))
-        
-        return view(**kwargs)
-    
-    return wrapped_view
+def admin_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("auth.login"))
+
+        if session.get("admin") != "True":
+            abort(403)
+
+        return f(*args, **kwargs)
+    return wrapper
