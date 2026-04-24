@@ -1,19 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block header %}
+<h1>{% block title %}Log In{% endblock %}</h1>
+{% endblock %} {% block content %}
+<form action="login" method="post">
+  <!-- CSRF tag injector -->
+  {{ form.hidden_tag() }}
 
-{% block header %}
-  <h1>{% block title %}Log In{% endblock %}</h1>
-{% endblock %}
+  <label>Email</label>
+  {{ form.email }}
+  {% for error in form.email.errors %}
+    <span style="color:red;">{{ error }}</span>
+  {% endfor %}
 
-{% block content %}
-  <form method="post">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
+  <label>Password</label>
+  {{ form.password }}
+  {% for error in form.password.errors %}
+    <span style="color:red;">{{ error }}</span>
+  {% endfor %}
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-
-    <input type="submit" value="Log In">
-  </form>
+  <input type="submit" value="Log In" />
+</form>
 {% endblock %}
