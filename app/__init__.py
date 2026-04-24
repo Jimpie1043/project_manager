@@ -33,17 +33,19 @@ def create_app(test_config=None):
 
     os.makedirs(app.instance_path, exist_ok=True)
 
+
     init_security(app)
     csrf.init_app(app)
-
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from . import auth
-    app.register_blueprint(auth.bp)
 
-    from . import workspace
-    app.register_blueprint(workspace.bp)
+    from .routes.auth_routes import auth
+    from .routes.workspace_routes import workspace
+
+    app.register_blueprint(auth)
+    app.register_blueprint(workspace)
+
     app.add_url_rule('/', endpoint='index')
 
     return app
