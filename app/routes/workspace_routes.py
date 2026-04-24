@@ -7,10 +7,10 @@ from app.models.project import Project
 from app.utils.auth import login_required
 
 
-bp = Blueprint('workspace', __name__)
+workspace = Blueprint('workspace', __name__)
 
 
-@bp.route('/')
+@workspace.route('/')
 @login_required
 def index():
     """
@@ -21,8 +21,8 @@ def index():
     return render_template('workspace/index.html', projects=projects)
 
 
-@bp.route('/create', methods=('GET', 'POST'))
-@login_required()
+@workspace.route('/create', methods=('GET', 'POST'))
+@login_required
 def create():
     if request.method == "POST":
         title = request.form['title']
@@ -47,13 +47,19 @@ def create():
         
 
 """ROUTES TO ADD"""
-@bp.route('/<int:project_id>')
-@login_required()
+@workspace.route('/<int:project_id>')
+@login_required
+def project():
+    return
 
 
-@bp.route('/<int:project_id/edit>')
-@login_required()
+@workspace.route('/<int:project_id>/edit')
+@login_required
+def project_edit():
+    return
 
 
-@bp.route('/<int:project_id/delete>')
-@login_required()
+@workspace.route('/<int:project_id>/delete')
+@login_required
+def project_delete():
+    return
