@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Manager</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-container">
+            <div>
+                <a href="{{ url_for('workspace.index') }}" class="logo">Project Manager</a>
+                <p class="author">François-Xavier Leclerc</p>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="{{ url_for('workspace.index') }}">My Workspace</a>
+                <a href="{{ url_for('auth.login') }}">Login</a>
+                <a href="{{ url_for('auth.register') }}">Register</a>
+
+                {% if session.get("admin", "") == True %}
+                <a href="{{ url_for('admin.dashboard') }}">Admin</a>
+                {% endif %}
+
+                {% if session.get("user_email") %}
+                    <a href="{{ url_for('user.profile') }}">Profil</a>
+                    <span class="login-status">Logged in as : : {{ session.get("user_email") }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="logout-link">Logout</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 - Project Manager</p>
+    </footer>
+
+</body>
+</html>
